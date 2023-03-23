@@ -44,6 +44,6 @@ const generateCaption = async (occasion) => {
   }
 };
 
-rl.question("What is the occasion or mode you want to get a caption for? ", (occasion) => {
+rl.question("What is the occasion or mode you want to get a caption for?", (occasion) => {
   generateCaption(occasion);
 });
