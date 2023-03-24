@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { generateCaption } from "../openai";
 import { Button, Form, FormGroup, Label, Input, Card, CardBody } from "reactstrap";
-import { FiCopy } from 'react-icons/fi';
+import { FiCopy, FiThumbsUp } from 'react-icons/fi';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const CaptionGenerator = () => {
   const [occasion, setOccasion] = useState("");
   const [caption, setCaption] = useState("");
+  const [liked, setLiked] = useState(false);
 
   const handleOccasionChange = (event) => {
     setOccasion(event.target.value);
@@ -23,6 +24,7 @@ const CaptionGenerator = () => {
     const generatedCaption = await generateCaption(occasion);
     if (generatedCaption) {
       setCaption(generatedCaption);
+      setLiked(false);
     }
   };
 
@@ -30,19 +32,27 @@ const CaptionGenerator = () => {
     navigator.clipboard.writeText(caption);
   }
 
+  const handleLike = () => {
+    setLiked(true);
+    setTimeout(() => {
+      setLiked(false);
+      setOccasion("");
+      setCaption("");
+    }, 1000);
+  }
+
   return (
     <Card style={{ maxWidth: "50%", margin: "5% auto" }}>
       <CardBody>
-        <Form>
+        <Form onSubmit={e => e.preventDefault()}>
           <FormGroup>
             <Label for="occasion">What is the occasion you want to get a caption for:</Label>
             <Input type="text" id="occasion" value={occasion} onChange={handleOccasionChange} placeholder="cool, happy, sunny day etc" required minLength={3} />
           </FormGroup>
-          {!caption && <Button color="primary" onClick={handleGenerateCaption} disabled={occasion.length < 3}>
+          {!liked && !caption && <Button color="primary" onClick={handleGenerateCaption} disabled={occasion.length < 3}>
             Generate Caption
-            </Button>
-          }
-          {caption && (
+          </Button>}
+          {caption && !liked && (
             <div>
               <p>Caption: {caption}</p>
               <Button color="secondary" size="sm" style={{marginRight: "2%"}} onClick={handleCopyCaption}>
@@ -51,8 +61,12 @@ const CaptionGenerator = () => {
               <Button color="primary" size="sm" onClick={handleRegenerateCaption}>
                 Regenerate Caption
               </Button>
+              <Button color="success" size="sm" onClick={handleLike} style={{marginLeft: "2%"}}>
+                <FiThumbsUp />
+              </Button>
             </div>
           )}
+          {liked && <p>Enjoy your caption!</p>}
         </Form>
       </CardBody>
     </Card>
