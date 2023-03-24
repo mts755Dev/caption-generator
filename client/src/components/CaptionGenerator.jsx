@@ -42,7 +42,7 @@ const CaptionGenerator = () => {
   }
 
   return (
-    <Card style={{ maxWidth: "50%", margin: "5% auto" }}>
+    <Card style={{ maxWidth: "50%", margin: "15% auto" }}>
       <CardBody>
         <Form onSubmit={e => e.preventDefault()}>
           <FormGroup>
