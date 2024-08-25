@@ -9,7 +9,7 @@ const openai = new OpenAIApi(configuration);
 export const generateCaption = async (occasion) => {
   try {
     const response = await openai.createCompletion({
-      model: "text-davinci-003",
+      model: "gpt-3.5-turbo",
       prompt: `Write a caption for ${occasion} and include relevant emojis.`,
       temperature: 0.7,
       max_tokens: 256,
