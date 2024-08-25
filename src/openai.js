@@ -1,14 +1,12 @@
-import { Configuration, OpenAIApi } from "openai";
+import OpenAI from 'openai';
 
-const configuration = new Configuration({
+const openai = new OpenAI({
   apiKey: process.env.REACT_APP_OPENAI_API_KEY,
 });
 
-const openai = new OpenAIApi(configuration);
-
 export const generateCaption = async (occasion) => {
   try {
-    const response = await openai.createCompletion({
+    const response = await openai.chat.completions.create({
       model: "gpt-3.5-turbo",
       prompt: `Write a caption for ${occasion} and include relevant emojis.`,
       temperature: 0.7,
